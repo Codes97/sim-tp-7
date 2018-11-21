@@ -71,6 +71,8 @@ public class Fila {
         this.endS5 = new SimpleStringProperty(endS5);
     }
 
+
+
     public String getEvent() {
         return event.get();
     }

@@ -3,7 +3,7 @@ package utn.frc.sim.model.servers;
 public enum ServerState {
     OCP("Ocupado"),
     LBR("Libre"),
-    OUT("Calibrando");
+    OUT("Parado");
 
     private final String text;
 
