@@ -1,8 +1,10 @@
 package utn.frc.sim.simulation;
 
+import utn.frc.sim.model.EulerRow;
 import utn.frc.sim.util.DoubleUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class SimulationWrapper {
 
@@ -168,25 +170,6 @@ public class SimulationWrapper {
 
 
     /*
-    Datos para Darsena 1.
-     */
-
-//    public String getDarsena1ClientK() {
-//        return simulation.getDarsena1()
-//                .getServingClient()
-//                .map(client -> DoubleUtils.getDoubleWithFourPlaces(client.getK()))
-//                .orElse(NONE_SYMBOL);
-//    }
-//
-//    public String getDarsena1ClientCapacity() {
-//        return simulation.getDarsena1()
-//                .getServingClient()
-//                .map(client -> DoubleUtils.getDoubleWithFourPlaces(client.getCapacity()))
-//                .orElse(NONE_SYMBOL);
-//    }
-
-
-    /*
     Estatisticas y conteos.
      */
 
@@ -203,11 +186,19 @@ public class SimulationWrapper {
     }
 
     public String getStoppedTime(){
-        return String.valueOf(DoubleUtils.round(simulation.getAvgMinutesStopped(), 2)) + " min";
+        return String.valueOf(DoubleUtils.round(simulation.getAvgStoppedTime(), 2)) + " hs";
     }
 
     public String getMaxWorksAtTime(){
         return String.valueOf(simulation.getMaxClientsAtTime());
+    }
+
+    public List<EulerRow> getEulerRows(){
+        return simulation.getEulerRows();
+    }
+
+    public String getH(){
+        return DoubleUtils.roundString(simulation.getH(), 4);
     }
 
     public boolean verifyRowToAddToTable(String txtFromDay, String txtToDay, String txtFromHour, String txtToHour){

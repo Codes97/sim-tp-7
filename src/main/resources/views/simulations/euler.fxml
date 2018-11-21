@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="utn.frc.sim.view.EulerController">
+   <children>
+      <TableView fx:id="tbEuler" layoutY="38.0" prefHeight="361.0" prefWidth="600.0">
+        <columns>
+          <TableColumn fx:id="tbT" prefWidth="95.0" text="T" />
+          <TableColumn fx:id="tbZ" prefWidth="89.0" text="Z" />
+            <TableColumn fx:id="tbZ1" prefWidth="105.0" text="Z'" />
+            <TableColumn fx:id="tbYn1" prefWidth="93.0" text="Yn+1*" />
+            <TableColumn fx:id="tbFxyn1" text="F(X, Yn+1*)" />
+            <TableColumn fx:id="tbZ3" prefWidth="134.0" text="[Z' + F(X, Yn+1*)]/2" />
+        </columns>
+      </TableView>
+      <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="H: " />
+      <TextField fx:id="tfH" disable="true" layoutX="27.0" layoutY="10.0" />
+   </children>
+</AnchorPane>

@@ -26,6 +26,10 @@ public class TimeEvent {
         return calculateNextEventFromMinutes(timeFrom, random);
     }
 
+    public LocalDateTime calculateNextEventFromConstant(LocalDateTime clock){
+        return clock.plus((int)generator.random(), ChronoUnit.MINUTES);
+    }
+
     private LocalDateTime calculateNextEventFromMinutes(LocalDateTime timeFrom, double random) {
 
         int minutes = (int) random;

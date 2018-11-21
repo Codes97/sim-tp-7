@@ -6,6 +6,7 @@ import utn.frc.sim.model.TimeEvent;
 import utn.frc.sim.model.clients.Client;
 import utn.frc.sim.model.Event;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
@@ -30,9 +31,17 @@ public class Server {
         nextEnd = calculateNextEventForClient(clock, client);
         state = ServerState.OCP;
     }
+    public void serveToClientEuler(LocalDateTime clock, Client client) {
+        servingClient = client;
+        nextEnd = calculateNextEventForClientEuler(clock);
+        state = ServerState.OCP;
+    }
 
     protected LocalDateTime calculateNextEventForClient(LocalDateTime clock, Client client) {
         return timeEvent.calculateNextEventFromRandom(clock);
+    }
+    protected LocalDateTime calculateNextEventForClientEuler(LocalDateTime clock){
+        return timeEvent.calculateNextEventFromConstant(clock);
     }
 
     public Event getEvent() {

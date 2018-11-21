@@ -2,10 +2,9 @@ package utn.frc.sim.simulation;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utn.frc.sim.generators.distributions.DistributionRandomGenerator;
-import utn.frc.sim.generators.distributions.NegativeExponentialDistributionGenerator;
-import utn.frc.sim.generators.distributions.NormalDistributionGenerator;
-import utn.frc.sim.generators.distributions.UniformDistributionGenerator;
+import utn.frc.sim.generators.distributions.*;
+import utn.frc.sim.model.EulerMejorado;
+import utn.frc.sim.model.EulerRow;
 import utn.frc.sim.model.Event;
 import utn.frc.sim.model.clients.Client;
 import utn.frc.sim.model.clients.ClientGenerator;
@@ -15,6 +14,7 @@ import utn.frc.sim.model.servers.ServerWithDistribution;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 
@@ -25,7 +25,7 @@ public class Simulation {
     private LocalDateTime dayFirstEvent;
     private ClientGenerator clientGenerator;
     private double avgMinutesPerClient;
-    private double avgMinutesStopped;
+    private double avgStoppedTime;
     private int maxClientsAtTime;
     private int attendingWorks;
     private int clientsServed;
@@ -44,6 +44,7 @@ public class Simulation {
     private Queue<Client> colaA;
     private Queue<Client> colaB;
     private Queue<Client> colaSecado;
+    private List<EulerRow> eulerRows;
 
     private Simulation(SimulationType type, int days) {
         initSimulation(type, days);
@@ -64,9 +65,10 @@ public class Simulation {
     }
 
     private void initServers(){
+        eulerRows = EulerMejorado.calculateEuler();
         DistributionRandomGenerator aGenerator = UniformDistributionGenerator.createOf(1, 10);
         DistributionRandomGenerator bGenerator = NormalDistributionGenerator.createOf(8, Math.sqrt(5));
-        DistributionRandomGenerator secadoGenerator = NormalDistributionGenerator.createOf(20, Math.sqrt(5));
+        DistributionRandomGenerator secadoGenerator = ConstantDistributionGenerator.createOf(EulerMejorado.getTime());
 
         areaA = new Server("Area A", aGenerator);
         areaB = new Server("Area B", bGenerator);
@@ -93,7 +95,7 @@ public class Simulation {
 
     private void initStatisticsValues() {
         avgMinutesPerClient = 0;
-        avgMinutesStopped = 0;
+        avgStoppedTime = 0;
         maxClientsAtTime = 0;
         attendingWorks = 0;
         clientsServed = 0;
@@ -204,15 +206,15 @@ public class Simulation {
                 logger.debug("{} - Area B finished. Client: {}.", clock, finishedClient);
                 clientOfEvent = finishedClient;
                 if (secado1.isFree()) {
-                    secado1.serveToClient(clock, finishedClient);
+                    secado1.serveToClientEuler(clock, finishedClient);
                 } else if (secado2.isFree()) {
-                    secado2.serveToClient(clock, finishedClient);
+                    secado2.serveToClientEuler(clock, finishedClient);
                 } else if(secado3.isFree()){
-                    secado3.serveToClient(clock, finishedClient);
+                    secado3.serveToClientEuler(clock, finishedClient);
                 } else if(secado4.isFree()){
-                    secado4.serveToClient(clock, finishedClient);
+                    secado4.serveToClientEuler(clock, finishedClient);
                 } else if(secado4.isFree()){
-                    secado4.serveToClient(clock, finishedClient);
+                    secado4.serveToClientEuler(clock, finishedClient);
                 } else {
                     colaSecado.add(finishedClient);
                 }
@@ -285,7 +287,7 @@ public class Simulation {
         }
         if (!colaSecado.isEmpty() && secado.isFree()) {
             Client nextClient = colaSecado.poll();
-            secado.serveToClient(clock, nextClient);
+            secado.serveToClientEuler(clock, nextClient);
         }
     }
 
@@ -300,7 +302,7 @@ public class Simulation {
     private void calculateAvgMinutesStopped(LocalDateTime clock, LocalDateTime stopped) {
         int n = clientsServed;
         long duration = ChronoUnit.MINUTES.between(stopped, clock);
-        avgMinutesStopped = ((double) 1 / n) * ((n - 1) * avgMinutesStopped + duration);
+        avgStoppedTime = ((double) 1 / n) * ((n - 1) * avgStoppedTime + duration);
     }
 
 
@@ -368,8 +370,16 @@ public class Simulation {
         return firstEvent;
     }
 
-    public double getAvgMinutesStopped() {
-        return avgMinutesStopped;
+    public int getAttendingWorks() {
+        return attendingWorks;
+    }
+
+    public List<EulerRow> getEulerRows() {
+        return eulerRows;
+    }
+
+    public double getAvgStoppedTime() {
+        return avgStoppedTime;
     }
 
 
@@ -465,5 +475,9 @@ public class Simulation {
 
     public Queue<Client> getColaSecado() {
         return colaSecado;
+    }
+
+    public double getH(){
+        return EulerMejorado.getH();
     }
 }

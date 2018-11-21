@@ -7,6 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sun.plugin.javascript.navig.Anchor;
 import utn.frc.sim.simulation.SimulationType;
 
 import java.io.IOException;
@@ -35,6 +36,15 @@ public class MainMenuController {
     }
 
     @FXML
+    void verCalculoEuler(ActionEvent event){
+        try {
+            paneMain.getChildren().setAll((AnchorPane) FXMLLoader.load(getClass().getResource("/views/simulations/euler.fxml")));
+        } catch (IOException e) {
+            logger.error("Problem opening Simulacion Dialog.", e);
+        }
+    }
+
+    @FXML
     void openEssayInfoDialog(ActionEvent event) {
         setEssayInfoDialog();
     }
@@ -50,7 +60,7 @@ public class MainMenuController {
 
     private void setEssayInfoDialog() {
         try {
-            paneMain.getChildren().setAll((AnchorPane) FXMLLoader.load(getClass().getResource("/views/menu/essay_info.fxml")));
+            paneMain.getChildren().setAll((AnchorPane) FXMLLoader.load(getClass().getResource("/views/menu/main-menu.fxml")));
         } catch (IOException e) {
             logger.error("Problem opening EssayInfoDialog.", e);
         }

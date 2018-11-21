@@ -4,6 +4,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -11,11 +14,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utn.frc.sim.simulation.SimulationFinishedException;
 import utn.frc.sim.simulation.SimulationWrapper;
 import utn.frc.sim.util.Fila;
+
+import java.io.IOException;
 
 public class SimulationController {
 
@@ -106,11 +112,6 @@ public class SimulationController {
     @FXML
     private Text txCamionesTotales;
 
-    @FXML
-    private TextField txt_Numeric;
-    @FXML
-    private TextField txt_Letters;
-
 
 
     @FXML
@@ -186,7 +187,6 @@ public class SimulationController {
                 try {
                     runOneStepAndAddToTable();
                 } catch (SimulationFinishedException e) {
-                    calculateStats();
                     logger.debug("Simulation finished.");
                     break;
                 }
@@ -195,14 +195,9 @@ public class SimulationController {
             try {
                 runOneStepAndAddToTable();
             } catch (SimulationFinishedException e) {
-                calculateStats();
                 logger.debug("Simulation finished.");
             }
         }
-    }
-
-    private void calculateStats() {
-
     }
 
     private void runOneStepAndAddToTable() throws SimulationFinishedException {

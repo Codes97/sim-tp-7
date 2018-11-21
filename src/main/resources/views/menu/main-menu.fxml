@@ -15,7 +15,7 @@
                 <Menu mnemonicParsing="false" text="Sistema de Colas">
                     <items>
                         <MenuItem fx:id="miSim1" mnemonicParsing="false" onAction="#openSimulation1" text="Simulación" />
-                        <MenuItem mnemonicParsing="false" onAction="#openEssayInfoDialog" text="Información de trabajo" />
+                  <MenuItem fx:id="miEuler" mnemonicParsing="false" onAction="#verCalculoEuler" text="Ver Calculo Euler" />
                     </items>
                 </Menu>
             </menus>
@@ -42,11 +42,6 @@
                         <Font name="System Bold" size="18.0" />
                     </font>
                 </Label>
-            </children>
-        </Pane>
-        <Pane prefHeight="35.0" prefWidth="1024.0" style="-fx-background-color: #d7e1f2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-            <children>
-                <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="801.0" layoutY="9.0" prefHeight="17.0" prefWidth="473.0" text="Acosta, Antonellini, Argüello, Caffaratti, Saad - Grupo 6 Copyright ©" />
             </children>
         </Pane>
     </children>
